@@ -6,7 +6,8 @@ const {
 
 const getBasketProducts = async (req, res) => {
   try {
-    const basketProducts = await getAllBasketProducts();
+    const userId = req.header("user-id");
+    const basketProducts = await getAllBasketProducts(userId);
     res.json(basketProducts);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -15,9 +16,8 @@ const getBasketProducts = async (req, res) => {
 
 const storeBasketProducts = async (req, res) => {
   try {
-    const products = req.body;
-    console.log(req.body);
-    const storedProducts = await storeAllBasketProducts(products);
+    const userId = req.header("user-id");
+    const storedProducts = await storeAllBasketProducts(req.body, userId);
     res.json(storedProducts);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -26,7 +26,8 @@ const storeBasketProducts = async (req, res) => {
 
 const deleteBasket = async (req, res) => {
   try {
-    await deleteAllBasketProducts();
+    const userId = req.header("user-id");
+    await deleteAllBasketProducts(userId);
     res.send("Stored basket was deleted");
   } catch (error) {
     res.status(500).json({ message: error.message });

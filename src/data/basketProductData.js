@@ -1,10 +1,8 @@
 const { getCollection } = require("../config/dbConnection");
 
-async function storeAllBasketProducts(products) {
+async function storeAllBasketProducts(products, userId) {
   try {
-    const storedProducts = await getCollection("shoppingcart").insertMany(
-      products
-    );
+    const storedProducts = await getCollection(userId).insertMany(products);
     return storedProducts;
   } catch (error) {
     console.error("Error storing basket products:", error);
@@ -12,11 +10,9 @@ async function storeAllBasketProducts(products) {
   }
 }
 
-async function getAllBasketProducts() {
+async function getAllBasketProducts(userId) {
   try {
-    const basketProducts = await getCollection("shoppingcart")
-      .find({})
-      .toArray();
+    const basketProducts = await getCollection(userId).find({}).toArray();
     return basketProducts;
   } catch (error) {
     console.error("Error fetching basket products:", error);
@@ -24,9 +20,9 @@ async function getAllBasketProducts() {
   }
 }
 
-async function deleteAllBasketProducts() {
+async function deleteAllBasketProducts(userId) {
   try {
-    await getCollection("shoppingcart").deleteMany({});
+    await getCollection(userId).drop();
   } catch (error) {
     console.error("Error deleting basket products", error);
     throw error;
